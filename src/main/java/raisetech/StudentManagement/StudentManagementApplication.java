@@ -1,42 +1,48 @@
 package raisetech.StudentManagement;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+@MapperScan("raisetech.StudentManagement")
 
 @SpringBootApplication
 @RestController
 public class StudentManagementApplication {
 
+    @Autowired
+    private StudentRepository repository;
 
-	private Map<String,String> student = new HashMap<>();
+    public static void main(String[] args) {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StudentManagementApplication.class, args);
-	}
+        SpringApplication.run(StudentManagementApplication.class, args);
+    }
 
-@GetMapping("/studentInfo")
-public Map<String,String> getStudentInfo() {
-	return student;
-}
+    @GetMapping("/student")
+    public String getStudent(@RequestParam String name) {
+        Student student = repository.searchByName(name);
 
-@PostMapping ("/studentInfo")
-	public void  setStudentInfo(String name,String age){
+        return student.getName() + "  " + student.getAge() + "歳";
+    }
 
-		student.put(name,age);
-}
+    @PostMapping("/student")
+    public void registerStudent(String name, int age) {
+        repository.registerStudent(name, age);
+    }
 
-@PostMapping("/studentName")
-	public void updateStudentName(String oldName,String newName){
-		String age = student.get(oldName);
-		student.remove(oldName);
-		student.put(newName,age);
+    @PatchMapping("/student")
+    public void updateStudentName(String name, int age) {
+        repository.updateStudent(name, age);
+    }
 
-}
+    @DeleteMapping("/student")
+    public void deleteStudent(String name) {
+        repository.deleteStudent(name);
+    }
 }
