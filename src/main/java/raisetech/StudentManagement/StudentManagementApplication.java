@@ -5,25 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
+import raisetech.StudentManagement.data.Student;
+import raisetech.StudentManagement.data.StudentCourses;
+import raisetech.StudentManagement.repository.StudentRepository;
 
 import java.util.List;
 
 @MapperScan("raisetech.StudentManagement")
 
 @SpringBootApplication
-@RestController
-public class StudentManagementApplication {
 
-    @Autowired
-    private StudentRepository repository;
+public class StudentManagementApplication {
 
     public static void main(String[] args) {
 
         SpringApplication.run(StudentManagementApplication.class, args);
-    }
-
-    @GetMapping("/studentList")
-    public List<StudentCourses> getStudentList() {
-        return repository.search();
     }
 }
