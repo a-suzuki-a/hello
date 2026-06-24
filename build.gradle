@@ -25,15 +25,18 @@ repositories {
 }
 
 dependencies {
+	//spring boot
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//apache commons lang　便利機能・ユーティリティ
 	implementation('org.apache.commons:commons-lang3:3.18.0')
-
+	//lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
+	//mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
-
+	//mybatis
 	implementation'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
 
