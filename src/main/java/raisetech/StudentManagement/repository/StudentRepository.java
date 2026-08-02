@@ -17,19 +17,50 @@ public interface StudentRepository {
 
     @Insert("""
            INSERT INTO students
-           (id,name,kana,nickname,mailaddress,tiiki,age,gender,remark,isDeleted)
+           (name,kana,nickname,mailaddress,tiiki,age,gender,remark,isDeleted)
            VALUES
-           (#{id},#{name},#{kana},#{nickname},#{mailaddress},#{tiiki},#{age},#{gender},#{remark},#{isDeleted})
+           (#{name},#{kana},#{nickname},#{mailaddress},#{tiiki},#{age},#{gender},#{remark},#{isDeleted})
            """)
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+
     void registerStudent(Student student);
 
     @Insert("""
                  INSERT INTO students_courses
-                 (id,student_id,course,start_date,schedule_end_date)
+                 (student_id,course,start_date,schedule_end_date)
                  VALUES
-                 (#{id},#{studentId},#{course},#{startDate},#{scheduleEndDate})
+                 (#{studentId},#{course},#{startDate},#{scheduleEndDate})
                """)
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     void registerStudentCourse(StudentCourses studentCourse);
+
+    @Select("""
+            SELECT * FROM students WHERE id = #{id}
+            """)
+     Student searchStudent(String id);
+
+    @Select("""
+        SELECT * FROM students_courses WHERE student_id = #{id}
+        """)
+    List<StudentCourses> searchStudentsCoursesByStudentId(String id);
+
+    @Update("""
+            UPDATE students SET
+            name = #{name},kana = #{kana},nickname= #{nickname},=mailaddress #{mailaddress},
+            tiiki = #{tiiki},age = #{age},gender = #{gender},remark = #{remark}
+            WHERE id = #{id}
+            """)
+    void updateStudent(Student student);
+
+    @Update("""
+            UPDATE student_courses
+            SET
+                course = #{course},
+                start_date = #{startDate},
+                schedule_end_date = #{scheduleEndDate}
+            WHERE id = #{id}
+            """)
+    void updateStudentCourse(StudentCourses studentCourses);
 
 
 }

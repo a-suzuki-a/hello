@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 public class StudentCourses {
 
-    private String id;
-    private String studentId;
+    private Integer id;
+    private Integer studentId;
     private String course;
     private LocalDate startDate;
     private LocalDate scheduleEndDate;
