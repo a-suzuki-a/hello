@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <title>受講生一覧</title>
 </head>
 <body>
@@ -23,7 +22,10 @@
     <tbody>
     <tr th:each="studentDetail : ${studentList}">
         <td th:text="${studentDetail.student.id}">1</td>
-        <td th:text="${studentDetail.student.name}">山田太郎</td>
+        <td>
+            <a th:href="@{/updateStudent/{id}(id=${studentDetail.student.id})}"
+        th:text="${studentDetail.student.name}"></a>
+        </td>
         <td th:text="${studentDetail.student.kana}">ヤマダタロウ</td>
         <td th:text="${studentDetail.student.nickname}">タロ</td>
         <td th:text="${studentDetail.student.mailaddress}">taro@example.com</td>
