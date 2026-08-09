@@ -66,6 +66,7 @@ public class StudentService {
         repository.updateStudent(studentDetail.getStudent());
 
         for (StudentCourses course : studentDetail.getStudentCourses()) {
+
             repository.updateStudentCourse(course);
         }
 
