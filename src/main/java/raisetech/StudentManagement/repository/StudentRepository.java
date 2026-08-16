@@ -9,7 +9,9 @@ import java.util.List;
 @Mapper
 public interface StudentRepository {
 
-    @Select("SELECT * FROM students")
+    @Select("""
+    SELECT * FROM students WHERE isDeleted = false
+    """)
     List<Student> search();
 
     @Select("SELECT * FROM students_courses")
@@ -42,22 +44,20 @@ public interface StudentRepository {
     @Select("""
         SELECT * FROM students_courses WHERE student_id = #{id}
         """)
-    List<StudentCourses> searchStudentsCoursesByStudentId(String id);
+    List<StudentCourses> searchStudentsCoursesByStudentId(String studentid);
 
     @Update("""
             UPDATE students SET
-            name = #{name},kana = #{kana},nickname= #{nickname},=mailaddress #{mailaddress},
-            tiiki = #{tiiki},age = #{age},gender = #{gender},remark = #{remark}
+            name = #{name},kana = #{kana},nickname= #{nickname},mailaddress =#{mailaddress},
+            tiiki = #{tiiki},age = #{age},gender = #{gender},remark = #{remark},isDeleted = #{isDeleted}
             WHERE id = #{id}
             """)
     void updateStudent(Student student);
 
     @Update("""
-            UPDATE student_courses
+            UPDATE students_courses
             SET
-                course = #{course},
-                start_date = #{startDate},
-                schedule_end_date = #{scheduleEndDate}
+                course = #{course}
             WHERE id = #{id}
             """)
     void updateStudentCourse(StudentCourses studentCourses);
