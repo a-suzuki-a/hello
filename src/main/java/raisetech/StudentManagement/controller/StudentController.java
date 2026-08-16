@@ -62,7 +62,7 @@ public class StudentController {
         service.registerStudent(studentDetail);
         return "redirect:/studentList";
     }
-
+man
     @PostMapping("/updateStudent")
     public ResponseEntity<String>updateStudent(@RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
