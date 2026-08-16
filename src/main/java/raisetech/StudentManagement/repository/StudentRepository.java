@@ -9,9 +9,7 @@ import java.util.List;
 @Mapper
 public interface StudentRepository {
 
-    @Select("""
-    SELECT * FROM students WHERE isDeleted = false
-    """)
+    @Select("SELECT * FROM students ")
     List<Student> search();
 
     @Select("SELECT * FROM students_courses")
@@ -31,7 +29,7 @@ public interface StudentRepository {
                  INSERT INTO students_courses
                  (student_id,course,start_date,schedule_end_date)
                  VALUES
-                 (#{studentId},#{course},#{startDate},#{scheduleEndDate})
+                 (#{studentIdorigin},#{course},#{startDate},#{scheduleEndDate})
                """)
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void registerStudentCourse(StudentCourses studentCourse);

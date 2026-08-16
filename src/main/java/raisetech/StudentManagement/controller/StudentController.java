@@ -2,6 +2,7 @@ package raisetech.StudentManagement.controller;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class StudentController {
 
     private StudentService service;
@@ -29,12 +30,10 @@ public class StudentController {
     }
 
     @GetMapping("/studentList")
-    public String getStudentList(Model model) {
+    public List<StudentDetail> getStudentList() {
         List<Student> students = service.searchStudentList();
         List<StudentCourses> studentCourses = service.searchStudentsCourseList();
-
-        model.addAttribute("studentList",converter.convertStudentDetails(students,studentCourses));
-        return "studentList";
+        return converter.convertStudentDetails(students,studentCourses);
     }
     @GetMapping("/studentsCourseList")
         public List<StudentCourses> getStudentsCourseList () {
@@ -54,12 +53,6 @@ public class StudentController {
        return "registerStudent";
     }
 
-    @GetMapping ("/updateStudent/{id}")
-        public String getStudent(@PathVariable String id, Model model){
-        StudentDetail studentDetail = service.searchStudent(id);
-        model.addAttribute("studentDetail",studentDetail);
-        return "updateStudent";
-        }
 
     @PostMapping("/registerStudent")
     public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
@@ -71,9 +64,8 @@ public class StudentController {
     }
 
     @PostMapping("/updateStudent")
-    public String updateStudent(@ModelAttribute StudentDetail studentDetail) {
-
+    public ResponseEntity<String>updateStudent(@RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
-        return "redirect:/studentList";
+        return ResponseEntity.ok("更新が成功しました");
     }
 }
