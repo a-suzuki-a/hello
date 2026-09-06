@@ -2,7 +2,7 @@ package raisetech.StudentManagement.repository;
 
 import org.apache.ibatis.annotations.*;
 import raisetech.StudentManagement.data.Student;
-import raisetech.StudentManagement.data.StudentCourses;
+import raisetech.StudentManagement.data.StudentCourse;
 
 import java.util.List;
 
@@ -26,8 +26,14 @@ public interface StudentRepository {
      * @return　受講生のコース情報（全件）
      */
     @Select("SELECT * FROM students_courses")
-    List<StudentCourses> searchStudentsCourses();
+    List<StudentCourse> searchStudentCourseList();
 
+    /**
+     * 受講生を新規登録します。
+     * IDに関しては自動採番を行う。
+     *
+     * @param student　受講生
+     */
     @Insert("""
            INSERT INTO students
            (name,kana,nickname,mailaddress,tiiki,age,gender,remark,isDeleted)
@@ -35,9 +41,14 @@ public interface StudentRepository {
            (#{name},#{kana},#{nickname},#{mailaddress},#{tiiki},#{age},#{gender},#{remark},#{isDeleted})
            """)
     @Options(useGeneratedKeys = true,keyProperty = "id")
-
     void registerStudent(Student student);
 
+    /**
+     * 受講生コース情報を新規登録します。
+     * IDに関しては自動採番を行う。
+     *
+     * @param studentCourse　受講生コース情報
+     */
     @Insert("""
                  INSERT INTO students_courses
                  (student_id,course,start_date,schedule_end_date)
@@ -45,7 +56,7 @@ public interface StudentRepository {
                  (#{studentId},#{course},#{startDate},#{scheduleEndDate})
                """)
     @Options(useGeneratedKeys = true,keyProperty = "id")
-    void registerStudentCourse(StudentCourses studentCourse);
+    void registerStudentCourse(StudentCourse studentCourse);
 
     /**
      * 受講生の検索を行います。
@@ -67,8 +78,13 @@ public interface StudentRepository {
     @Select("""
         SELECT * FROM students_courses WHERE student_id = #{id}
         """)
-    List<StudentCourses> searchStudentsCoursesByStudentId(String studentid);
+    List<StudentCourse> searchStudentCourseByStudentId(String studentid);
 
+    /**
+     * 受講生を更新します。
+     *
+      * @param student　受講生
+     */
     @Update("""
             UPDATE students SET
             name = #{name},kana = #{kana},nickname= #{nickname},mailaddress =#{mailaddress},
@@ -77,13 +93,18 @@ public interface StudentRepository {
             """)
     void updateStudent(Student student);
 
+    /**
+     * 受講コース情報のコース名を更新します。
+     *
+     * @param studentCourse　受講生コース情報
+     */
     @Update("""
             UPDATE students_courses
             SET
                 course = #{course}
             WHERE id = #{id}
             """)
-    void updateStudentCourse(StudentCourses studentCourses);
+    void updateStudentCourse(StudentCourse studentCourse);
 
 
 }
