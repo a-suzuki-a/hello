@@ -29,6 +29,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	//apache commons lang　便利機能・ユーティリティ
 	implementation('org.apache.commons:commons-lang3:3.18.0')
 	//lombok
