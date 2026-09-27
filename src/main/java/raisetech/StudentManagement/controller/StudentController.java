@@ -1,5 +1,7 @@
 package raisetech.StudentManagement.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import raisetech.StudentManagement.exception.TestException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -36,12 +38,13 @@ public class StudentController {
      *
      * @return　受講生詳細一覧（全件）
      */
+    @Operation(summary = "一覧検索",description = "受講生の一覧を検索します")
     @GetMapping("/studentList")
     public List<StudentDetail> getStudentList() throws TestException {
         throw new TestException(
                 "現在このAPIは利用できません。URLは「studentList」ではなく「students」を利用してください");
     }
-
+    @Operation(summary = "受講生コース一覧検索",description = "受講生に紐づく受講生コース情報の一覧を検索します")
     @GetMapping("/studentsCourseList")
         public List<StudentCourse> getStudentsCourseList () {
             return service.searchStudentsCourseList();
@@ -54,8 +57,10 @@ public class StudentController {
      * @param id　受講生ID
      * @return　受講生
      */
+    @Operation(summary = "受講生詳細検索",description = "IDに紐づく受講生情報を検索します")
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^[0-9]+$") String id){
+    public StudentDetail getStudent(@Parameter(description = "受講生一覧",example = "1")
+                                        @PathVariable @NotBlank @Pattern(regexp = "^[0-9]+$") String id){
         return service.searchStudent(id);
     }
 
@@ -65,6 +70,7 @@ public class StudentController {
      * @param studentDetail　受講生詳細
      * @return　実行結果
      */
+    @Operation(summary = "受講生登録",description = "受講生の登録をします")
     @PostMapping("/registerStudent")
     public ResponseEntity<StudentDetail>registerStudent(@Valid @RequestBody StudentDetail studentDetail) {
         StudentDetail responseStudentDetail =service.registerStudent(studentDetail);
@@ -78,6 +84,7 @@ public class StudentController {
      * @param studentDetail　受講生詳細
      * @return　実行結果
      */
+    @Operation(summary = "受講生詳細更新",description = "受講生詳細を更新します。")
     @PutMapping("/updateStudent")
     public ResponseEntity<String>updateStudent(@Valid @RequestBody StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
