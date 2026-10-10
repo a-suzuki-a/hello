@@ -40,9 +40,8 @@ public class StudentController {
      */
     @Operation(summary = "一覧検索",description = "受講生の一覧を検索します")
     @GetMapping("/studentList")
-    public List<StudentDetail> getStudentList() throws TestException {
-        throw new TestException(
-                "現在このAPIは利用できません。URLは「studentList」ではなく「students」を利用してください");
+    public List<StudentDetail> getStudentList() {
+        return service.searchStudentList();
     }
     @Operation(summary = "受講生コース一覧検索",description = "受講生に紐づく受講生コース情報の一覧を検索します")
     @GetMapping("/studentsCourseList")
@@ -59,8 +58,8 @@ public class StudentController {
      */
     @Operation(summary = "受講生詳細検索",description = "IDに紐づく受講生情報を検索します")
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@Parameter(description = "受講生一覧",example = "1")
-                                        @PathVariable @NotBlank @Pattern(regexp = "^[0-9]+$") String id){
+    public StudentDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^[0-9]+$")
+                                        String id){
         return service.searchStudent(id);
     }
 
