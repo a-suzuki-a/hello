@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,6 +58,40 @@ class StudentControllerTest {
                 .andExpect(status().isOk());
 
         verify(service,times(1)).searchStudentList();
+    }
+    @Test
+    void 受講生詳細の検索ができて空のリストが返ってくること() throws Exception {
+        String id = "999";
+        mockMvc.perform(get("/student/{id}",id))
+                .andExpect(status().isOk());
+
+        verify(service,times(1)).searchStudent(id);
+    }
+    @Test
+    void 受講生詳細の登録が実行できて空のリストが返ってくること() throws Exception {
+        mockMvc.perform(post("/registerStudent").contentType(MediaType.APPLICATION_JSON).content(
+                """
+                        {
+                        "student":{
+                        "name":"佐藤太郎",
+                        "kana":"サトウタロウ",
+                        "nickname":"さと",
+                        "mailaddress":"sato@example.com",
+                        "tiiki":"神奈川",
+                        "age":36,
+                        "gender":"male",
+                        "remark":""
+                        },
+                        "studentCourseList":[
+                        {
+                        "course":"Javaコース"
+                        }
+                        ]
+                        }
+                        """
+        ))
+                .andExpect(status().isOk());
+        verify(service,times(1)).registerStudent(any());
     }
 
     @Test

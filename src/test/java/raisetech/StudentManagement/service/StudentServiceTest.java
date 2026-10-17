@@ -81,6 +81,7 @@ class StudentServiceTest {
     @Test
     void 受講生詳細の登録_受講生とコース情報が登録されること() {
         Student student = new Student();
+        student.setId("1");//テスト用
         StudentCourse studentCourse = new StudentCourse();
         StudentDetail studentDetail = new StudentDetail(student, List.of(studentCourse));
 

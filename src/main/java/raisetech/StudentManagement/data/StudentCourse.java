@@ -15,12 +15,11 @@ import java.time.LocalDate;
 
 public class StudentCourse {
 
-    private Integer id;
-    @NotNull (message = "受講生IDを入力してください")
     private Integer studentId;
+
     @NotBlank (message = "コース名を入力してください")
     private String course;
-    @NotNull (message = "開始日を入力してください")
+
     private LocalDate startDate;
     private LocalDate scheduleEndDate;
 }

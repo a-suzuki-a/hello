@@ -44,8 +44,8 @@ class StudentCourseTest {
         StudentCourse course = new StudentCourse();
 
         Set<ConstraintViolation<StudentCourse>>violations=validator.validateProperty(course,"studentId");
-        assertEquals(1,violations.size());
-        assertEquals("受講生IDを入力してください",violations.iterator().next().getMessage());
+        assertEquals(0,violations.size());
+
     }
 
 }
