@@ -57,7 +57,8 @@ class StudentControllerTest {
         mockMvc.perform(get("/studentList"))
                 .andExpect(status().isOk());
 
-        verify(service,times(1)).searchStudentList();
+        verify(service,times(1)).searchStudentList(null, null, null, null, null,
+                null, null, null, null, null);
     }
     @Test
     void 受講生詳細の検索ができて空のリストが返ってくること() throws Exception {
@@ -132,7 +133,8 @@ class StudentControllerTest {
         mockMvc.perform(get("/studentList"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-        verify(service,times(1)).searchStudentList();
+        verify(service,times(1)).searchStudentList(null, null, null, null, null,
+                null, null, null, null, null);
     }
 
     @Test

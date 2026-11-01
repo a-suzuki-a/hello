@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -40,8 +41,19 @@ public class StudentController {
      */
     @Operation(summary = "一覧検索",description = "受講生の一覧を検索します")
     @GetMapping("/studentList")
-    public List<StudentDetail> getStudentList() {
-        return service.searchStudentList();
+    public List<StudentDetail> getStudentList(
+            @RequestParam(required = false) String id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String kana,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String mailaddress,
+            @RequestParam(required = false) String tiiki,
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String remark,
+            @RequestParam(required = false) String course){
+        return service.searchStudentList(
+                id,name,kana,nickname,mailaddress,tiiki,age,gender,remark,course);
     }
     @Operation(summary = "受講生コース一覧検索",description = "受講生に紐づく受講生コース情報の一覧を検索します")
     @GetMapping("/studentsCourseList")

@@ -3,6 +3,7 @@ package raisetech.StudentManagement.repository;
 import org.apache.ibatis.annotations.*;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,8 +25,25 @@ public interface StudentRepository {
      *
      * @return　受講生のコース情報（全件）
      */
-
     List<StudentCourse> searchStudentCourseList();
+
+    /**
+     * 検索条件を指定して受講生を検索します。
+     * @param name　受講生の名前
+     * @param tiiki　受講生の地域
+     * @return 条件に一致する受講生一覧
+     */
+    List<Student> searchByCondition(
+            @Param("id")String id,
+            @Param("name")String name,
+            @Param("kana")String kana,
+            @Param("nickname")String nickname,
+            @Param("mailaddress")String mailaddress,
+            @Param("tiiki")String tiiki,
+            @Param("age")Integer age,
+            @Param("gender")String gender,
+            @Param("remark")String remark,
+            @Param("course")String course);
 
     /**
      * 受講生を新規登録します。
