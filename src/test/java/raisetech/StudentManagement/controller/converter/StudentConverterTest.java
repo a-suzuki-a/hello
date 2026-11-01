@@ -8,6 +8,7 @@ import raisetech.StudentManagement.domain.StudentDetail;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentConverterTest {
@@ -26,20 +27,17 @@ private StudentConverter sut;
     student.setName("山田太郎");
     //受講生コース情報作成
     StudentCourse course = new StudentCourse();
+
     course.setStudentId(1);
     course.setCourse("Javaコース");
 
     List<Student>studentList=List.of(student);
     List<StudentCourse>studentCourseList=List.of(course);
-
     //テスト対象のメソッド実行
     List<StudentDetail>actual=sut.convertStudentDetails(studentList,studentCourseList);
     //変換結果の検証
-    assertEquals(1,actual.size());
-    assertSame(student,actual.get(0).getStudent());
-    assertEquals(1,actual.get(0).getStudentCourseList().size());
-    assertSame(course,actual.get(0).getStudentCourseList().get(0));
-
+    assertThat(actual.get(0).getStudent()).isEqualTo(student);
+    assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
 }
 
 }

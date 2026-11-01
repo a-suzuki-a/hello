@@ -50,7 +50,8 @@ class StudentServiceTest {
         when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
 
         //実行
-        sut.searchStudentList();
+        sut.searchStudentList(null, null, null, null, null,
+                null, null, null, null, null);
         //検証
         verify(repository, times(1)).search();
         verify(repository, times(1)).searchStudentCourseList();
