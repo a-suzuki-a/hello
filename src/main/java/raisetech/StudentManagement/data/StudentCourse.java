@@ -15,6 +15,8 @@ import java.time.LocalDate;
 
 public class StudentCourse {
 
+    private Integer id;
+
     private Integer studentId;
 
     @NotBlank (message = "コース名を入力してください")

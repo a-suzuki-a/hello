@@ -23,6 +23,47 @@
         SELECT * FROM students_courses WHERE student_id = #{studentid}
     </select>
 
+    <!-- 検索条件を指定した受講生検索 -->
+    <select id="searchByCondition" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students
+        <where>
+            AND isDeleted = 0
+            <if test="id !=null and id !=null">
+               AND id = #{id}
+            </if>
+            <if test="name !=null and name !=''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="kana !=null and kana !=''">
+                AND kana LIKE CONCAT('%',#{kana},'%')
+            </if>
+            <if test="nickname !=null and nickname !=''">
+                AND nickname LIKE CONCAT('%',#{nickname},'%')
+            </if>
+            <if test="mailaddress !=null and mailaddress !=''">
+                AND mailaddress LIKE CONCAT('%',#{mailaddress},'%')
+            </if>
+            <if test="tiiki !=null and tiiki !=''">
+            AND tiiki LIKE CONCAT('%',#{tiiki},'%')
+            </if>
+            <if test="age !=null">
+                AND age = #{age}
+            </if>
+            <if test="gender !=null and gender !=''">
+                AND gender LIKE CONCAT('%',#{gender},'%')
+            </if>
+            <if test="remark !=null and remark !=''">
+                AND remark LIKE CONCAT('%',#{remark},'%')
+            </if>
+            <if test="course !=null and course !=''">
+                AND EXISTS(SELECT 1
+                FROM students_courses sc
+                WHERE sc.student_id = students.id
+                AND sc.course LIKE CONCAT('%',#{course},'%'))
+            </if>
+        </where>
+    </select>
+
     <!-- 受講生の登録 -->
     <insert id="registerStudent" parameterType="raisetech.StudentManagement.data.Student"
     useGeneratedKeys="true"
