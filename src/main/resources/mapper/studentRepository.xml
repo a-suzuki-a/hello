@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="raisetech.StudentManagement.repository.StudentRepository">
+
+    <!-- 受講生の全件検索 -->
+    <select id="search" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students
+    </select>
+
+    <!-- 受講生の検索 -->
+    <select id="searchStudent" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students WHERE id = #{id}
+    </select>
+
+    <!-- 受講生コースの全件検索 -->
+    <select id="searchStudentCourseList" resultType="raisetech.StudentManagement.data.StudentCourse">
+        SELECT * FROM students_courses
+    </select>
+
+    <!-- IDに紐づく受講生コースの検索 -->
+    <select id="searchStudentCourseByStudentId" resultType="raisetech.StudentManagement.data.StudentCourse">
+        SELECT * FROM students_courses WHERE student_id = #{studentid}
+    </select>
+
+    <!-- 検索条件を指定した受講生検索 -->
+    <select id="searchByCondition" resultType="raisetech.StudentManagement.data.Student">
+        SELECT * FROM students
+        <where>
+            AND isDeleted = 0
+            <if test="id !=null and id !=null">
+               AND id = #{id}
+            </if>
+            <if test="name !=null and name !=''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="kana !=null and kana !=''">
+                AND kana LIKE CONCAT('%',#{kana},'%')
+            </if>
+            <if test="nickname !=null and nickname !=''">
+                AND nickname LIKE CONCAT('%',#{nickname},'%')
+            </if>
+            <if test="mailaddress !=null and mailaddress !=''">
+                AND mailaddress LIKE CONCAT('%',#{mailaddress},'%')
+            </if>
+            <if test="tiiki !=null and tiiki !=''">
+            AND tiiki LIKE CONCAT('%',#{tiiki},'%')
+            </if>
+            <if test="age !=null">
+                AND age = #{age}
+            </if>
+            <if test="gender !=null and gender !=''">
+                AND gender LIKE CONCAT('%',#{gender},'%')
+            </if>
+            <if test="remark !=null and remark !=''">
+                AND remark LIKE CONCAT('%',#{remark},'%')
+            </if>
+            <if test="course !=null and course !=''">
+                AND EXISTS(SELECT 1
+                FROM students_courses sc
+                WHERE sc.student_id = students.id
+                AND sc.course LIKE CONCAT('%',#{course},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 受講生の登録 -->
+    <insert id="registerStudent" parameterType="raisetech.StudentManagement.data.Student"
+    useGeneratedKeys="true"
+    keyProperty="id">
+        INSERT INTO students
+        (name,kana,nickname,mailaddress,tiiki,age,gender,remark,isDeleted)
+        VALUES
+        (#{name},#{kana},#{nickname},#{mailaddress},#{tiiki},#{age},#{gender},#{remark},#{isDeleted})
+    </insert>
+
+    <!-- 受講生コースの登録 -->
+    <insert id="registerStudentCourse" parameterType="raisetech.StudentManagement.data.StudentCourse"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO students_courses
+        (student_id,course,start_date,schedule_end_date)
+        VALUES
+        (#{studentId},#{course},#{startDate},#{scheduleEndDate})
+    </insert>
+
+    <!-- 受講生の更新 -->
+    <update id="updateStudent" parameterType="raisetech.StudentManagement.data.Student">
+        UPDATE students
+        SET
+        name = #{name},kana = #{kana},nickname= #{nickname},mailaddress =#{mailaddress},
+        tiiki = #{tiiki},age = #{age},gender = #{gender},remark = #{remark},isDeleted = #{isDeleted}
+    </update>
+
+    <!-- 受講生コースの更新 -->
+    <update id="updateStudentCourse" parameterType="raisetech.StudentManagement.data.StudentCourse">
+        UPDATE students_courses
+        SET
+        course = #{course}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
