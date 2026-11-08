@@ -95,5 +95,8 @@ public interface StudentRepository {
 
     void updateStudentCourse(StudentCourse studentCourse);
 
+    int updateStudentCourseStatus(
+            @Param("id")Integer id,@Param("status")String ststus);
+
 
 }

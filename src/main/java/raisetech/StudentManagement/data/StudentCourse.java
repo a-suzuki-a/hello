@@ -24,5 +24,7 @@ public class StudentCourse {
 
     private LocalDate startDate;
     private LocalDate scheduleEndDate;
+
+    private String status;
 }
 

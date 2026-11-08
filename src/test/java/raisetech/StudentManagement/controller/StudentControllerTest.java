@@ -29,11 +29,13 @@ import static org.assertj.core.api.InstanceOfAssertFactories.atomicReferenceArra
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.ArgumentMatchers.anyString;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 
 @WebMvcTest(StudentController.class)
@@ -166,5 +168,100 @@ class StudentControllerTest {
                 .andExpect(jsonPath("$.student.name").value("山田太郎"));
         //serviceが1回呼び出されたことを確認
         verify(service, times(1)).searchStudent("123");
+    }
+    @Test
+            void コースのステータスを仮申込に更新できること()
+        throws Exception{
+        when(service.updateStudentCourseStatus(1,"仮申込"))
+                .thenReturn(true);
+        mockMvc.perform(put("/studentCourse/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {"status":"仮申込"}"""))
+                .andExpect(status().isNoContent());
+        verify(service,times(1))
+                .updateStudentCourseStatus(1,"仮申込");
+    }
+    @Test
+    void コースのステータスを本申込に更新できること() throws Exception {
+        when(service.updateStudentCourseStatus(1, "本申込"))
+                .thenReturn(true);
+
+        mockMvc.perform(put("/studentCourse/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "status": "本申込"
+                            }
+                            """))
+                .andExpect(status().isNoContent());
+
+        verify(service, times(1))
+                .updateStudentCourseStatus(1, "本申込");
+    }
+
+    @Test
+    void コースのステータスを受講中に更新できること() throws Exception {
+        when(service.updateStudentCourseStatus(1, "受講中"))
+                .thenReturn(true);
+
+        mockMvc.perform(put("/studentCourse/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "status": "受講中"
+                            }
+                            """))
+                .andExpect(status().isNoContent());
+
+        verify(service, times(1))
+                .updateStudentCourseStatus(1, "受講中");
+    }
+
+    @Test
+    void コースのステータスを受講終了に更新できること() throws Exception {
+        when(service.updateStudentCourseStatus(1, "受講終了"))
+                .thenReturn(true);
+
+        mockMvc.perform(put("/studentCourse/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "status": "受講終了"
+                            }
+                            """))
+                .andExpect(status().isNoContent());
+
+        verify(service, times(1))
+                .updateStudentCourseStatus(1, "受講終了");
+    }
+@Test
+    void 存在しないコースIDを指定したとき404が返ること()
+    throws Exception{
+        when(service.updateStudentCourseStatus(999,"本申込"))
+                .thenReturn(false);
+        mockMvc.perform(put("/studentCourse/999/status")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {"status":"本申込"}
+                        """))
+                .andExpect(status().isNotFound());
+        verify(service,times(1))
+                .updateStudentCourseStatus(999,"本申込");
+}
+    @Test
+    void 不正なステータスを指定したとき400が返ること() throws Exception {
+
+        mockMvc.perform(put("/studentCourse/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "status": "不正なステータス"
+                            }
+                            """))
+                .andExpect(status().isBadRequest());
+
+        verify(service, never())
+                .updateStudentCourseStatus(anyInt(), anyString());
     }
 }
