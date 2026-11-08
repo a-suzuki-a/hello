@@ -76,6 +76,11 @@ public class StudentService {
     void initStudentCourses(StudentCourse course, Student student) {
         LocalDate now = LocalDate.now();
 
+        if (course.getStatus() == null
+                || course.getStatus().isBlank()) {
+            course.setStatus("仮申込");
+        }
+
         course.setStudentId(Integer.valueOf(student.getId()));
         course.setStartDate(now);
         course.setScheduleEndDate(now.plusYears(1));
@@ -105,7 +110,9 @@ public class StudentService {
         repository.updateStudent(studentDetail.getStudent());
         studentDetail.getStudentCourseList()
                 .forEach(course -> repository.updateStudentCourse(course));
-
+    }
+    public boolean updateStudentCourseStatus(Integer id,String status){
+        return repository.updateStudentCourseStatus(id,status) >0;
     }
 }
 

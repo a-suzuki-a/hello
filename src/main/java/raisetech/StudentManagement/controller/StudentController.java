@@ -2,6 +2,7 @@ package raisetech.StudentManagement.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import raisetech.StudentManagement.data.CourseStatusRequest;
 import raisetech.StudentManagement.exception.TestException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -105,5 +106,18 @@ public class StudentController {
     @ExceptionHandler(TestException.class)
     public ResponseEntity<String>handTestException(TestException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    /**
+     * コースのステータス
+     */
+    @PutMapping("/studentCourse/{id}/status")
+    public ResponseEntity<Void>updateStudentCourseStatus(
+            @PathVariable Integer id,
+            @Valid @RequestBody CourseStatusRequest request){
+        boolean updated = service.updateStudentCourseStatus(id,request.getStatus());
+        if(!updated){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 }

@@ -79,9 +79,9 @@
             useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO students_courses
-        (student_id,course,start_date,schedule_end_date)
+        (student_id,course,start_date,schedule_end_date,status)
         VALUES
-        (#{studentId},#{course},#{startDate},#{scheduleEndDate})
+        (#{studentId},#{course},#{startDate},#{scheduleEndDate},#{status})
     </insert>
 
     <!-- 受講生の更新 -->
@@ -97,6 +97,12 @@
         UPDATE students_courses
         SET
         course = #{course}
+        WHERE id = #{id}
+    </update>
+    <update id="updateStudentCourseStatus" parameterType="raisetech.StudentManagement.data.StudentCourse">
+        UPDATE students_courses
+        SET
+        status = #{status}
         WHERE id = #{id}
     </update>
 
